@@ -108,6 +108,10 @@ const ExpertiseSection: React.FC = () => {
     },
   ];
 
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="expertise" className="py-20 px-6 bg-gray-50">
       <div className="container mx-auto">
@@ -182,8 +186,8 @@ const ExpertiseSection: React.FC = () => {
               </ul>
               
               <div className="mt-8">
-                <button className="fun-button">
-                  Learn More
+                <button onClick={scrollToContact} className="fun-button">
+                  Ask Rob for help
                 </button>
               </div>
             </div>

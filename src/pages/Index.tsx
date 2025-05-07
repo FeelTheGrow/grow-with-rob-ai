@@ -4,6 +4,7 @@ import NavMenu from '@/components/NavMenu';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import ExpertiseSection from '@/components/ExpertiseSection';
+import MyWorkSection from '@/components/MyWorkSection';
 import AboutSection from '@/components/AboutSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -30,6 +31,10 @@ const Index = () => {
         
         <ScrollReveal>
           <ExpertiseSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <MyWorkSection />
         </ScrollReveal>
         
         <ScrollReveal>
