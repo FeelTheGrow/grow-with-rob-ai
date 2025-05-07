@@ -33,7 +33,7 @@ const ServicesSection: React.FC = () => {
             SERVICES
           </span>
           <h2 className="section-heading">How I <span className="text-ftg-green">Grow</span> Your Business</h2>
-          <p className="text-xl max-w-3xl mx-auto text-ftg-dark/80">
+          <p className="text-xl max-w-3xl mx-auto text-ftg-light">
             Combining analytical expertise with creative thinking to help you make strategic decisions that drive growth.
           </p>
         </div>

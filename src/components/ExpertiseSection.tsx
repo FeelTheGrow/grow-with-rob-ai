@@ -20,7 +20,7 @@ const ExpertiseArea: React.FC<ExpertiseAreaProps> = ({
           {icon}
         </div>
         <div>
-          <h3 className="text-lg font-bold mb-2">{title}</h3>
+          <h3 className="text-lg font-bold mb-2 text-ftg-green">{title}</h3>
           <p className={cn("transition-all duration-300", active ? "text-white/90" : "text-ftg-dark/70")}>
             {description}
           </p>
@@ -91,7 +91,7 @@ const ExpertiseSection: React.FC = () => {
             EXPERTISE
           </span>
           <h2 className="section-heading">Areas of <span className="text-ftg-green">Expertise</span></h2>
-          <p className="text-xl max-w-3xl mx-auto text-ftg-dark/80">
+          <p className="text-xl max-w-3xl mx-auto text-ftg-light">
             With over 15 years of experience across multiple industries, I bring a wealth of knowledge to every project.
           </p>
         </div>
