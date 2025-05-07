@@ -37,6 +37,36 @@
 
     --radius: 0.75rem;
   }
+
+  .dark {
+    --background: 144 30% 8%;
+    --foreground: 144 10% 90%;
+
+    --card: 144 25% 10%;
+    --card-foreground: 144 10% 90%;
+
+    --popover: 144 25% 10%;
+    --popover-foreground: 144 10% 90%;
+
+    --primary: 144 75% 50%;
+    --primary-foreground: 144 10% 5%;
+
+    --secondary: 144 20% 18%;
+    --secondary-foreground: 144 10% 90%;
+
+    --muted: 144 20% 18%;
+    --muted-foreground: 144 10% 60%;
+
+    --accent: 0 80% 65%;
+    --accent-foreground: 144 10% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 144 10% 90%;
+
+    --border: 144 20% 25%;
+    --input: 144 20% 25%;
+    --ring: 144 75% 50%;
+  }
 }
 
 @layer base {
@@ -94,7 +124,7 @@
   .fun-button {
     @apply px-6 py-3 font-medium text-white bg-ftg-green rounded-md transition-all duration-300 
     hover:bg-ftg-green/80 hover:shadow-md hover:shadow-ftg-green/30 
-    active:scale-95 transform;
+    active:scale-95 transform dark:hover:shadow-ftg-green/15;
   }
 }
 
