@@ -1,41 +1,35 @@
-
 import React, { useEffect, useState } from 'react';
-
 interface CounterProps {
   end: number;
   prefix?: string;
   suffix?: string;
   duration?: number;
 }
-
-const Counter: React.FC<CounterProps> = ({ end, prefix = '', suffix = '', duration = 2000 }) => {
+const Counter: React.FC<CounterProps> = ({
+  end,
+  prefix = '',
+  suffix = '',
+  duration = 2000
+}) => {
   const [count, setCount] = useState(0);
-  
   useEffect(() => {
     let startTimestamp: number | null = null;
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       setCount(Math.floor(progress * end));
-      
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
     };
-    
     window.requestAnimationFrame(step);
   }, [end, duration]);
-  
-  return (
-    <div className="font-bold text-4xl">
+  return <div className="font-bold text-4xl bg-transparent">
       {prefix}{count}{suffix}
-    </div>
-  );
+    </div>;
 };
-
 const AboutSection = () => {
-  return (
-    <section id="about" className="py-20 px-6">
+  return <section id="about" className="py-20 px-6">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative">
@@ -45,7 +39,7 @@ const AboutSection = () => {
                 <div className="w-full h-full bg-ftg-green/10 flex items-center justify-center">
                   <div className="text-center p-6">
                     <div className="text-6xl text-ftg-green mb-4">👋</div>
-                    <h3 className="text-2xl font-bold mb-2">Rob Dysell</h3>
+                    <h3 className="text-2xl font-bold mb-2 text-ftg-dark">Rob Dysell</h3>
                     <p className="text-lg text-ftg-dark/70">Product Strategy Specialist</p>
                   </div>
                 </div>
@@ -80,17 +74,17 @@ const AboutSection = () => {
               Bringing <span className="text-ftg-green">Fun</span> to Your Business Strategy
             </h2>
             
-            <p className="text-lg text-ftg-dark/80 mb-6">
+            <p className="text-lg mb-6 text-ftg-light">
               I'm Rob, a product strategy specialist with over 15 years of experience in marketing, research, and business development. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
             </p>
             
             <div className="bg-ftg-light p-5 rounded-lg mb-6 border-l-4 border-ftg-green">
-              <p className="italic">
+              <p className="italic text-ftg-dark">
                 "I help businesses identify when to persevere with their current strategy and when to pivot for maximum impact."
               </p>
             </div>
             
-            <p className="text-lg text-ftg-dark/80 mb-6">
+            <p className="text-lg mb-6 text-ftg-light">
               My approach combines rigorous data analysis with innovative thinking, helping businesses grow in ways they never thought possible. And yes, we'll have fun along the way!
             </p>
             
@@ -113,8 +107,6 @@ const AboutSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default AboutSection;

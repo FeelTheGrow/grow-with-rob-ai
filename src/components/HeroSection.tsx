@@ -1,41 +1,34 @@
-
 import React, { useState, useEffect } from 'react';
-
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0
+  });
   useEffect(() => {
     setIsVisible(true);
-    
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: e.clientX / window.innerWidth,
         y: e.clientY / window.innerHeight
       });
     };
-    
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-  
   const calculateTransform = (factor: number) => {
     const xMove = (mousePosition.x - 0.5) * factor;
     const yMove = (mousePosition.y - 0.5) * factor;
     return `translate(${xMove}px, ${yMove}px)`;
   };
-
-  return (
-    <section id="home" className="min-h-screen relative overflow-hidden pt-24 pb-16 px-6">
+  return <section id="home" className="min-h-screen relative overflow-hidden pt-24 pb-16 px-6">
       {/* Background elements */}
-      <div 
-        className="absolute right-0 top-1/4 w-64 h-64 bg-ftg-green/20 rounded-full blur-3xl"
-        style={{ transform: calculateTransform(-20) }}
-      ></div>
-      <div 
-        className="absolute left-1/4 bottom-1/4 w-80 h-80 bg-ftg-yellow/20 rounded-full blur-3xl"
-        style={{ transform: calculateTransform(-10) }}
-      ></div>
+      <div className="absolute right-0 top-1/4 w-64 h-64 bg-ftg-green/20 rounded-full blur-3xl" style={{
+      transform: calculateTransform(-20)
+    }}></div>
+      <div className="absolute left-1/4 bottom-1/4 w-80 h-80 bg-ftg-yellow/20 rounded-full blur-3xl" style={{
+      transform: calculateTransform(-10)
+    }}></div>
       
       <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className={`${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-300`}>
@@ -64,7 +57,7 @@ const HeroSection = () => {
         
         <div className={`${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-700 relative`}>
           <div className="w-full aspect-square bg-ftg-green/80 blob-shape blob-animation p-1.5">
-            <div className="w-full h-full bg-white blob-shape blob-animation flex items-center justify-center p-8">
+            <div className="w-full h-full blob-shape blob-animation flex items-center justify-center p-8 bg-ftg-green rounded-none">
               <div className="text-center">
                 <h3 className="text-xl md:text-2xl font-bold mb-2">Did You Know?</h3>
                 <p className="text-lg text-ftg-dark/80 mb-4">Companies with distinct brand personalities outperform competitors by 31%</p>
@@ -91,8 +84,6 @@ const HeroSection = () => {
           <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="#3DE068" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
