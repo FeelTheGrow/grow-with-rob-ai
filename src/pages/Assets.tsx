@@ -15,11 +15,10 @@ const Assets = () => {
   const fetchAssets = async () => {
     setIsLoading(true);
     try {
-      // Use a direct SQL query to access the ftg schema
-      const { data, error } = await supabase
-        .from('ftg.assets')
-        .select('*')
-        .order('created_at', { ascending: false }) as { data: Asset[] | null, error: any };
+      // Call the edge function to get assets
+      const { data, error } = await supabase.functions.invoke('assets', {
+        body: { action: 'getAssets' }
+      });
         
       if (error) {
         console.error('Error fetching assets:', error);
@@ -32,8 +31,13 @@ const Assets = () => {
       }
       
       setAssets(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching assets:', error);
+      toast({
+        title: "Error loading assets",
+        description: error.message || "Failed to load assets",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }

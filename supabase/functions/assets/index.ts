@@ -13,43 +13,49 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Get the request body
-  const body = await req.json();
-  const { action, params } = body;
-
-  // Initialize Supabase client
+  // Initialize Supabase client with service role key (admin access)
   const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
+    const { action, data } = await req.json();
+    
     let result;
-
+    
     switch (action) {
-      case 'insert_asset':
-        // Insert an asset record using RPC function
-        const { data: insertData, error: insertError } = await supabase.rpc('insert_asset', {
-          asset_name: params.asset_name,
-          asset_path: params.asset_path,
-          asset_type: params.asset_type,
-          asset_size: params.asset_size,
-          asset_mime: params.asset_mime,
-          asset_category: params.asset_category,
-          asset_alt: params.asset_alt
-        });
-          
-        if (insertError) throw insertError;
-        result = insertData;
+      case 'getAssets':
+        // Get all assets
+        const { data: assets, error: getError } = await supabase
+          .from('ftg.assets')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (getError) throw getError;
+        result = assets;
         break;
         
-      case 'delete_asset':
-        // Delete an asset record using RPC function
-        const { data: deleteData, error: deleteError } = await supabase.rpc('delete_asset', {
-          asset_id: params.asset_id
-        });
-          
+      case 'insertAsset':
+        // Insert an asset
+        const { data: newAsset, error: insertError } = await supabase
+          .from('ftg.assets')
+          .insert(data)
+          .select();
+        
+        if (insertError) throw insertError;
+        result = newAsset;
+        break;
+        
+      case 'deleteAsset':
+        // Delete an asset
+        const { data: deletedAsset, error: deleteError } = await supabase
+          .from('ftg.assets')
+          .delete()
+          .eq('id', data.id)
+          .select();
+        
         if (deleteError) throw deleteError;
-        result = deleteData;
+        result = deletedAsset;
         break;
         
       default:
@@ -58,12 +64,13 @@ serve(async (req) => {
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
         );
     }
-
+    
     return new Response(
       JSON.stringify(result),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
+    console.error('Error in assets function:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }

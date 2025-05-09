@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -69,12 +70,15 @@ const AssetsGallery: React.FC<AssetsGalleryProps> = ({
         
       if (storageError) throw storageError;
       
-      // Use a direct SQL query to access the ftg schema
-      const { error: dbError } = await supabase.rpc('delete_asset', {
-        asset_id: asset.id
-      }) as { error: any };
+      // Delete the record using our edge function
+      const { error } = await supabase.functions.invoke('assets', {
+        body: {
+          action: 'deleteAsset',
+          data: { id: asset.id }
+        }
+      });
         
-      if (dbError) throw dbError;
+      if (error) throw error;
       
       toast({
         title: "Asset deleted",

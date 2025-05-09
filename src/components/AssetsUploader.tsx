@@ -82,17 +82,22 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
         const { data: { publicUrl } } = supabase.storage
           .from('ftg-assets')
           .getPublicUrl(filePath);
-          
-        // Using an RPC function to insert records into ftg schema
-        const { error: dbError } = await supabase.rpc('insert_asset', {
-          asset_name: file.name,
-          asset_path: filePath,
-          asset_type: fileExt?.toLowerCase() || 'unknown',
-          asset_size: file.size,
-          asset_mime: file.type,
-          asset_category: category,
-          asset_alt: file.name
-        }) as { error: any };
+        
+        // Insert asset record using the edge function
+        const { error: dbError } = await supabase.functions.invoke('assets', {
+          body: {
+            action: 'insertAsset',
+            data: {
+              name: file.name,
+              file_path: filePath,
+              file_type: fileExt?.toLowerCase() || 'unknown',
+              file_size: file.size,
+              mime_type: file.type,
+              category: category,
+              alt_text: file.name
+            }
+          }
+        });
           
         if (dbError) throw dbError;
         

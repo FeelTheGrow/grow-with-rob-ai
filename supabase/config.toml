@@ -3,3 +3,9 @@ project_id = "qtcwzyyacyekklhtbwrp"
 
 [functions.db-connection]
 verify_jwt = false
+
+[functions.db-utils]
+verify_jwt = false
+
+[functions.assets]
+verify_jwt = false
