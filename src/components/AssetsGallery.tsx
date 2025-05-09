@@ -28,15 +28,7 @@ import { toast } from '@/hooks/use-toast';
 import { FileIcon, ImageIcon, MoreVerticalIcon, Trash2Icon, CopyIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-
-interface Asset {
-  id: string;
-  name: string;
-  file_path: string;
-  file_type: string;
-  category: string;
-  created_at: string;
-}
+import { Asset } from '@/pages/Assets';
 
 interface AssetsGalleryProps {
   assets: Asset[];
@@ -78,11 +70,11 @@ const AssetsGallery: React.FC<AssetsGalleryProps> = ({
         
       if (storageError) throw storageError;
       
-      // Delete record from database
+      // Delete record from database using raw SQL
       const { error: dbError } = await supabase
         .from('ftg.assets')
         .delete()
-        .eq('id', asset.id);
+        .eq('id', asset.id) as { error: any };
         
       if (dbError) throw dbError;
       
@@ -93,11 +85,11 @@ const AssetsGallery: React.FC<AssetsGalleryProps> = ({
       
       if (onAssetDeleted) onAssetDeleted();
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting asset:', error);
       toast({
         title: "Delete failed",
-        description: "There was a problem deleting the asset",
+        description: "There was a problem deleting the asset: " + error.message,
         variant: "destructive",
       });
     }
@@ -115,8 +107,9 @@ const AssetsGallery: React.FC<AssetsGalleryProps> = ({
       return (
         <img 
           src={url} 
-          alt={asset.name}
+          alt={asset.alt_text || asset.name}
           className="w-full h-32 object-cover object-center rounded-t-md"
+          loading="lazy"
         />
       );
     }

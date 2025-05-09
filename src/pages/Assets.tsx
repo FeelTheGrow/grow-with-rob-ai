@@ -4,14 +4,21 @@ import { supabase } from '@/integrations/supabase/client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AssetsUploader from '@/components/AssetsUploader';
 import AssetsGallery from '@/components/AssetsGallery';
+import { toast } from '@/hooks/use-toast';
 
-type Asset = {
+// Define the Asset type to match our database schema
+export type Asset = {
   id: string;
   name: string;
   file_path: string;
   file_type: string;
+  file_size: number;
+  mime_type: string;
   category: string;
+  description?: string;
+  alt_text?: string;
   created_at: string;
+  updated_at: string;
 }
 
 const Assets = () => {
@@ -22,12 +29,22 @@ const Assets = () => {
   const fetchAssets = async () => {
     setIsLoading(true);
     try {
+      // Using the raw SQL query approach for the custom schema
       const { data, error } = await supabase
         .from('ftg.assets')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: Asset[] | null, error: any };
         
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching assets:', error);
+        toast({
+          title: "Error loading assets",
+          description: error.message,
+          variant: "destructive"
+        });
+        throw error;
+      }
+      
       setAssets(data || []);
     } catch (error) {
       console.error('Error fetching assets:', error);

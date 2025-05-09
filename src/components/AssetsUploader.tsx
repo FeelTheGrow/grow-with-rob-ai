@@ -83,7 +83,7 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
           .from('ftg-assets')
           .getPublicUrl(filePath);
           
-        // Insert record in database
+        // Insert record in database using raw SQL approach
         const { error: dbError } = await supabase
           .from('ftg.assets')
           .insert({
@@ -94,7 +94,7 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
             mime_type: file.type,
             category: category,
             alt_text: file.name
-          });
+          }) as { error: any };
           
         if (dbError) throw dbError;
         
