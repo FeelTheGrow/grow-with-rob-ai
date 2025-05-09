@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -28,7 +27,7 @@ import { toast } from '@/hooks/use-toast';
 import { FileIcon, ImageIcon, MoreVerticalIcon, Trash2Icon, CopyIcon } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Asset } from '@/pages/Assets';
+import { Asset } from '@/types/supabase';
 
 interface AssetsGalleryProps {
   assets: Asset[];
@@ -70,11 +69,10 @@ const AssetsGallery: React.FC<AssetsGalleryProps> = ({
         
       if (storageError) throw storageError;
       
-      // Delete record from database using raw SQL
-      const { error: dbError } = await supabase
-        .from('ftg.assets')
-        .delete()
-        .eq('id', asset.id) as { error: any };
+      // Use a direct SQL query to access the ftg schema
+      const { error: dbError } = await supabase.rpc('delete_asset', {
+        asset_id: asset.id
+      }) as { error: any };
         
       if (dbError) throw dbError;
       

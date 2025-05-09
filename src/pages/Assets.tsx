@@ -5,21 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AssetsUploader from '@/components/AssetsUploader';
 import AssetsGallery from '@/components/AssetsGallery';
 import { toast } from '@/hooks/use-toast';
-
-// Define the Asset type to match our database schema
-export type Asset = {
-  id: string;
-  name: string;
-  file_path: string;
-  file_type: string;
-  file_size: number;
-  mime_type: string;
-  category: string;
-  description?: string;
-  alt_text?: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Asset } from '@/types/supabase';
 
 const Assets = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -29,7 +15,7 @@ const Assets = () => {
   const fetchAssets = async () => {
     setIsLoading(true);
     try {
-      // Using the raw SQL query approach for the custom schema
+      // Use a direct SQL query to access the ftg schema
       const { data, error } = await supabase
         .from('ftg.assets')
         .select('*')

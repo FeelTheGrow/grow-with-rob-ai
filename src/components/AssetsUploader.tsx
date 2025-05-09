@@ -24,12 +24,12 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop,
     accept: {
-      'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.svg'],
-      'application/pdf': ['.pdf'],
-      'font/*': ['.ttf', '.otf', '.woff', '.woff2'],
-      'text/plain': ['.txt'],
-      'application/msword': ['.doc'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
+      'image/*': [],
+      'application/pdf': [],
+      'font/*': [],
+      'text/plain': [],
+      'application/msword': [],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': []
     }
   });
 
@@ -83,18 +83,16 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
           .from('ftg-assets')
           .getPublicUrl(filePath);
           
-        // Insert record in database using raw SQL approach
-        const { error: dbError } = await supabase
-          .from('ftg.assets')
-          .insert({
-            name: file.name,
-            file_path: filePath,
-            file_type: fileExt?.toLowerCase() || 'unknown',
-            file_size: file.size,
-            mime_type: file.type,
-            category: category,
-            alt_text: file.name
-          }) as { error: any };
+        // Using an RPC function to insert records into ftg schema
+        const { error: dbError } = await supabase.rpc('insert_asset', {
+          asset_name: file.name,
+          asset_path: filePath,
+          asset_type: fileExt?.toLowerCase() || 'unknown',
+          asset_size: file.size,
+          asset_mime: file.type,
+          asset_category: category,
+          asset_alt: file.name
+        }) as { error: any };
           
         if (dbError) throw dbError;
         
