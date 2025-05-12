@@ -21,6 +21,7 @@ const AssetsUploader: React.FC<AssetUploaderProps> = ({ onUploadComplete }) => {
     ]);
   }, []);
 
+  // Fixed the accept property to use the correct format for react-dropzone v11.7.1
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop,
     accept: {
