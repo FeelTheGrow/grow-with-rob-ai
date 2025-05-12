@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { cn } from "@/lib/utils";
-import { Balloon } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 const NavMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +46,7 @@ const NavMenu = () => {
           <ThemeToggle />
           <button className="fun-button flex items-center gap-2">
             <span>Let's Talk</span>
-            <Balloon className="animate-bounce" size={18} />
+            <MessageCircle className="animate-bounce" size={18} />
           </button>
         </div>
         
@@ -87,7 +87,7 @@ const NavMenu = () => {
             ))}
             <button className="fun-button flex items-center justify-center gap-2 mt-4">
               <span>Let's Talk</span>
-              <Balloon className="animate-bounce" size={18} />
+              <MessageCircle className="animate-bounce" size={18} />
             </button>
           </div>
         </div>
