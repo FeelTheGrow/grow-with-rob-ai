@@ -41,7 +41,7 @@ const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-ftg-light">
+          <p className="text-xl md:text-2xl mb-8 text-ftg-dark">
             Product strategy, business development, and growth processes with fun as the secret ingredient.
           </p>
           

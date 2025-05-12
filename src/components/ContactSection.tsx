@@ -51,7 +51,7 @@ const ContactSection = () => {
             GET IN TOUCH
           </span>
           <h2 className="section-heading">Let's <span className="text-ftg-green">Grow</span> Together</h2>
-          <p className="text-xl max-w-3xl mx-auto text-ftg-light">
+          <p className="text-xl max-w-3xl mx-auto text-ftg-dark">
             Ready to take your business to the next level? Let's connect and explore how we can work together.
           </p>
         </div>
