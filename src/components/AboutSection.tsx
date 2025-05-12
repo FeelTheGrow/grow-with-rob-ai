@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 interface CounterProps {
   end: number;
@@ -70,11 +71,11 @@ const AboutSection = () => {
             <span className="inline-block text-sm font-semibold px-3 py-1 rounded-full bg-ftg-light text-ftg-green mb-4">
               ABOUT ME
             </span>
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-4xl font-bold mb-6 text-foreground">
               Bringing <span className="text-ftg-green">Fun</span> to Your Business Strategy
             </h2>
             
-            <p className="text-lg mb-6 text-ftg-light">
+            <p className="text-lg mb-6 text-gray-700">
               I'm Rob, a product strategy specialist with over 15 years of experience in marketing, research, and business development. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
             </p>
             
@@ -84,7 +85,7 @@ const AboutSection = () => {
               </p>
             </div>
             
-            <p className="text-lg mb-6 text-ftg-light">
+            <p className="text-lg mb-6 text-gray-700">
               My approach combines rigorous data analysis with innovative thinking, helping businesses grow in ways they never thought possible. And yes, we'll have fun along the way!
             </p>
             

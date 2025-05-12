@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,7 +33,7 @@ const HeroSection = () => {
       
       <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className={`${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-300`}>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground">
             Strategy with a <span className="text-ftg-green relative">
               twist
               <svg className="absolute -bottom-1 w-full" viewBox="0 0 100 8" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +42,7 @@ const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-ftg-light">
+          <p className="text-xl md:text-2xl mb-8 text-gray-700">
             Product strategy, business development, and growth processes with fun as the secret ingredient.
           </p>
           
