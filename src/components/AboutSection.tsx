@@ -1,11 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
+
 interface CounterProps {
   end: number;
   prefix?: string;
   suffix?: string;
   duration?: number;
 }
+
 const Counter: React.FC<CounterProps> = ({
   end,
   prefix = '',
@@ -13,6 +15,7 @@ const Counter: React.FC<CounterProps> = ({
   duration = 2000
 }) => {
   const [count, setCount] = useState(0);
+  
   useEffect(() => {
     let startTimestamp: number | null = null;
     const step = (timestamp: number) => {
@@ -25,10 +28,12 @@ const Counter: React.FC<CounterProps> = ({
     };
     window.requestAnimationFrame(step);
   }, [end, duration]);
+  
   return <div className="font-bold text-4xl bg-transparent">
       {prefix}{count}{suffix}
     </div>;
 };
+
 const AboutSection = () => {
   return <section id="about" className="py-20 px-6">
       <div className="container mx-auto">
@@ -37,13 +42,14 @@ const AboutSection = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-ftg-green/20 rounded-lg transform -rotate-3"></div>
             <div className="relative z-10 bg-white p-6 rounded-lg shadow-lg">
               <div className="h-80 bg-gray-200 rounded-lg overflow-hidden mb-4">
-                <div className="w-full h-full bg-ftg-green/10 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="text-6xl text-ftg-green mb-4">👋</div>
-                    <h3 className="text-2xl font-bold mb-2 text-ftg-dark">Rob Dysell</h3>
-                    <p className="text-lg text-ftg-dark/70">Product Strategy Specialist</p>
-                  </div>
-                </div>
+                <img 
+                  src="/profile-rob-dysell.jpg" 
+                  alt="Rob Dysell - Product Strategy Specialist" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="%233DE068" stroke="%233DE068"><circle cx="12" cy="8" r="5"/><path d="M20 21v-2a7 7 0 0 0-14 0v2"/></svg>';
+                  }}
+                />
               </div>
               
               <div className="grid grid-cols-3 gap-4 text-center">
@@ -72,21 +78,21 @@ const AboutSection = () => {
               ABOUT ME
             </span>
             <h2 className="text-4xl font-bold mb-6 text-foreground">
-              Bringing <span className="text-ftg-green">Fun</span> to Your Business Strategy
+              Hi, I'm <span className="text-ftg-green">Rob Dysell</span>
             </h2>
             
             <p className="text-lg mb-6 text-gray-700">
-              I'm Rob, a product strategy specialist with over 15 years of experience in marketing, research, and business development. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
+              With over 15 years of experience in marketing, research, and business development, I've helped numerous companies find their strategic path forward. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
             </p>
             
             <div className="bg-ftg-light p-5 rounded-lg mb-6 border-l-4 border-ftg-green">
               <p className="italic text-ftg-dark">
-                "I help businesses identify when to persevere with their current strategy and when to pivot for maximum impact."
+                "My mission is simple: to help businesses identify when to persevere with their current strategy and when to pivot for maximum impact—all while having fun in the process."
               </p>
             </div>
             
             <p className="text-lg mb-6 text-gray-700">
-              My approach combines rigorous data analysis with innovative thinking, helping businesses grow in ways they never thought possible. And yes, we'll have fun along the way!
+              As a solo consultant, I offer a personalized approach to every client. My methodology combines rigorous data analysis with innovative thinking, helping you grow in ways you never thought possible. And yes, we'll have fun along the way!
             </p>
             
             <div className="flex flex-wrap gap-3 mb-8">
@@ -110,4 +116,5 @@ const AboutSection = () => {
       </div>
     </section>;
 };
+
 export default AboutSection;

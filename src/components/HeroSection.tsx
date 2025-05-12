@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
+
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({
     x: 0,
     y: 0
   });
+
   useEffect(() => {
     setIsVisible(true);
     const handleMouseMove = (e: MouseEvent) => {
@@ -14,14 +16,17 @@ const HeroSection = () => {
         y: e.clientY / window.innerHeight
       });
     };
+    
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
   const calculateTransform = (factor: number) => {
     const xMove = (mousePosition.x - 0.5) * factor;
     const yMove = (mousePosition.y - 0.5) * factor;
     return `translate(${xMove}px, ${yMove}px)`;
   };
+
   return <section id="home" className="min-h-screen relative overflow-hidden pt-24 pb-16 px-6">
       {/* Background elements */}
       <div className="absolute right-0 top-1/4 w-64 h-64 bg-ftg-green/20 rounded-full blur-3xl" style={{
@@ -33,6 +38,10 @@ const HeroSection = () => {
       
       <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className={`${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-300`}>
+          <span className="inline-block text-sm font-semibold px-3 py-1 rounded-full bg-ftg-light text-ftg-green mb-4">
+            ROB DYSELL — PRODUCT STRATEGIST
+          </span>
+          
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground">
             Strategy with a <span className="text-ftg-green relative">
               twist
@@ -43,7 +52,7 @@ const HeroSection = () => {
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 text-gray-700">
-            Product strategy, business development, and growth processes with fun as the secret ingredient.
+            I help businesses develop product strategies, improve business development, and implement growth processes—with fun as the secret ingredient.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
@@ -60,8 +69,8 @@ const HeroSection = () => {
           <div className="w-full aspect-square bg-ftg-green/80 blob-shape blob-animation p-1.5">
             <div className="w-full h-full blob-shape blob-animation flex items-center justify-center p-8 bg-ftg-green rounded-none">
               <div className="text-center">
-                <h3 className="text-xl md:text-2xl font-bold mb-2">Did You Know?</h3>
-                <p className="text-lg text-ftg-dark/80 mb-4">Companies with distinct brand personalities outperform competitors by 31%</p>
+                <h3 className="text-xl md:text-2xl font-bold mb-2">Why Work With Me?</h3>
+                <p className="text-lg text-ftg-dark/80 mb-4">I combine data-driven analysis with creative solutions that helped clients increase growth by an average of 31%</p>
                 <div className="inline-block animate-pulse-grow">
                   <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#3DE068" strokeWidth="2" />
@@ -87,4 +96,5 @@ const HeroSection = () => {
       </div>
     </section>;
 };
+
 export default HeroSection;
