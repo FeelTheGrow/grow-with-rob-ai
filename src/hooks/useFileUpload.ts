@@ -4,10 +4,12 @@ import { useDropzone } from 'react-dropzone';
 import { createClient } from '@supabase/supabase-js';
 import { toast } from '@/hooks/use-toast';
 
-export interface FileWithProgress extends File {
+export interface FileWithProgress {
+  file: File;
   preview?: string;
-  progress?: number;
+  progress: number;
   error?: string;
+  uploaded?: boolean;
 }
 
 interface UseFileUploadOptions {
@@ -52,12 +54,12 @@ export function useFileUpload({
       
       setFiles(prevFiles => [
         ...prevFiles,
-        ...acceptedFiles.map(file => 
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-            progress: 0
-          })
-        )
+        ...acceptedFiles.map(file => ({
+          file,
+          preview: URL.createObjectURL(file),
+          progress: 0,
+          uploaded: false
+        }))
       ]);
     }, []),
   });
@@ -65,8 +67,8 @@ export function useFileUpload({
   // Clean up previews when component unmounts
   useEffect(() => {
     return () => {
-      files.forEach(file => {
-        if (file.preview) URL.revokeObjectURL(file.preview);
+      files.forEach(fileObj => {
+        if (fileObj.preview) URL.revokeObjectURL(fileObj.preview);
       });
     };
   }, [files]);
@@ -83,8 +85,8 @@ export function useFileUpload({
   }, []);
 
   const clearAllFiles = useCallback(() => {
-    files.forEach(file => {
-      if (file.preview) URL.revokeObjectURL(file.preview);
+    files.forEach(fileObj => {
+      if (fileObj.preview) URL.revokeObjectURL(fileObj.preview);
     });
     setFiles([]);
   }, [files]);
@@ -102,14 +104,14 @@ export function useFileUpload({
         import.meta.env.VITE_SUPABASE_ANON_KEY
       );
       
-      const uploadPromises = files.map(async (file, index) => {
+      const uploadPromises = files.map(async (fileObj, index) => {
         try {
           // Upload to Supabase storage
           const { data, error } = await supabase.storage
             .from('assets')
-            .upload(`public/${file.name}`, file, {
+            .upload(`public/${fileObj.file.name}`, fileObj.file, {
               upsert: false,
-              contentType: file.type
+              contentType: fileObj.file.type
             });
             
           if (error) throw error;
@@ -117,14 +119,14 @@ export function useFileUpload({
           // Update file progress
           setFiles(prevFiles => {
             const updatedFiles = [...prevFiles];
-            updatedFiles[index] = { ...updatedFiles[index], progress: 100 };
+            updatedFiles[index] = { ...updatedFiles[index], progress: 100, uploaded: true };
             return updatedFiles;
           });
           
           uploadedCount++;
           return data;
         } catch (err) {
-          console.error(`Error uploading ${file.name}:`, err);
+          console.error(`Error uploading ${fileObj.file.name}:`, err);
           
           // Update file with error
           setFiles(prevFiles => {
