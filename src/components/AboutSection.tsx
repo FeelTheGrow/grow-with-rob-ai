@@ -74,8 +74,8 @@ const AboutSection = () => {
               Bringing <span className="text-ftg-green">Fun</span> to Your Business Strategy
             </h2>
             
-            <p className="text-lg mb-6 text-gray-700">
-              With over 15 years of experience in marketing, research, and business development, I've helped numerous companies find their strategic path forward. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
+            <p className="text-lg mb-6 text-ftg-light">
+              I'm Rob, a product strategy specialist with over 15 years of experience in marketing, research, and business development. I believe that the best strategies come from a unique blend of analytical thinking and creative problem-solving.
             </p>
             
             <div className="bg-ftg-light p-5 rounded-lg mb-6 border-l-4 border-ftg-green">
@@ -84,8 +84,8 @@ const AboutSection = () => {
               </p>
             </div>
             
-            <p className="text-lg mb-6 text-gray-700">
-              As a solo consultant, I offer a personalized approach to every client. My methodology combines rigorous data analysis with innovative thinking, helping you grow in ways you never thought possible. And yes, we'll have fun along the way!
+            <p className="text-lg mb-6 text-ftg-light">
+              My approach combines rigorous data analysis with innovative thinking, helping businesses grow in ways they never thought possible. And yes, we'll have fun along the way!
             </p>
             
             <div className="flex flex-wrap gap-3 mb-8">
