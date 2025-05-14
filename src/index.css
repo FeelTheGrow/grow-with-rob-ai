@@ -23,7 +23,7 @@
     --secondary-foreground: 144 30% 15%;
 
     --muted: 144 10% 90%;
-    --muted-foreground: 144 10% 40%;
+    --muted-foreground: 144 30% 30%;
 
     --accent: 0 80% 70%;
     --accent-foreground: 144 30% 10%;
@@ -106,7 +106,7 @@
   }
   
   .section-heading {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-10;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-10 text-foreground;
   }
   
   .card-hover {

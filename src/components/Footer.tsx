@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Linkedin, Github } from 'lucide-react';
+import { Linkedin, Github, Twitter } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,17 +9,17 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-10">
           <div>
             <h2 className="text-2xl font-bold mb-4">
-              <span className="text-ftg-green">Feel</span> the Grow
+              <span className="text-ftg-green">Rob</span> Dysell
             </h2>
             <p className="text-gray-300 mb-6">
-              Helping businesses discover their growth potential through strategic product development and marketing.
+              I help businesses discover their growth potential through strategic product development and marketing that's both effective and enjoyable.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.linkedin.com/in/dysell/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-ftg-green/20 rounded-full flex items-center justify-center text-ftg-green hover:bg-ftg-green hover:text-white transition-colors">
                 <Linkedin size={16} />
               </a>
-              <a href="https://github.com/FeelTheGrow" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-ftg-green/20 rounded-full flex items-center justify-center text-ftg-green hover:bg-ftg-green hover:text-white transition-colors">
-                <Github size={16} />
+              <a href="https://twitter.com/robdysell" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-ftg-green/20 rounded-full flex items-center justify-center text-ftg-green hover:bg-ftg-green hover:text-white transition-colors">
+                <Twitter size={16} />
               </a>
             </div>
           </div>
@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4 text-ftg-green">Contact Info</h3>
+            <h3 className="text-lg font-bold mb-4 text-ftg-green">Contact Rob</h3>
             <ul className="space-y-3">
               <li className="flex gap-3 items-center">
                 <div className="text-ftg-green">
@@ -55,7 +55,7 @@ const Footer = () => {
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                 </div>
-                <span className="text-gray-300">hello@feelthegrow.com</span>
+                <span className="text-gray-300">rob@feelthegrow.com</span>
               </li>
               <li className="flex gap-3 items-center">
                 <div className="text-ftg-green">
@@ -63,7 +63,7 @@ const Footer = () => {
                     <path fillRule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span className="text-gray-300">+46 123 456 789</span>
+                <span className="text-gray-300">+46 70 123 4567</span>
               </li>
               <li className="flex gap-3 items-center">
                 <div className="text-ftg-green">
@@ -78,7 +78,7 @@ const Footer = () => {
         </div>
         
         <div className="mt-10 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Feel the Grow. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Rob Dysell | Feel the Grow. All rights reserved.</p>
         </div>
       </div>
     </footer>

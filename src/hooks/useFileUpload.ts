@@ -1,147 +1,183 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { supabase } from '@/integrations/supabase/client';
+import { createClient } from '@supabase/supabase-js';
 import { toast } from '@/hooks/use-toast';
 
-export interface FileWithProgress {
-  file: File;
-  progress: number;
+export interface FileWithProgress extends File {
+  preview?: string;
+  progress?: number;
   error?: string;
-  uploaded?: boolean;
 }
 
-interface UseFileUploadProps {
+interface UseFileUploadOptions {
   onUploadComplete?: () => void;
+  maxFiles?: number;
+  maxSize?: number;
 }
 
-export const useFileUpload = ({ onUploadComplete }: UseFileUploadProps = {}) => {
+export function useFileUpload({
+  onUploadComplete,
+  maxFiles = 10,
+  maxSize = 5242880 // 5MB
+}: UseFileUploadOptions = {}) {
   const [files, setFiles] = useState<FileWithProgress[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles(prevFiles => [
-      ...prevFiles,
-      ...acceptedFiles.map(file => ({ file, progress: 0 }))
-    ]);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
-    onDrop,
+  
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       'image/*': [],
       'application/pdf': [],
-      'font/*': [],
       'text/plain': [],
-      'application/msword': [],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': []
-    }
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [],
+      'font/ttf': [],
+      'font/otf': [],
+      'image/svg+xml': [],
+    },
+    maxFiles,
+    maxSize,
+    onDrop: useCallback((acceptedFiles: File[], fileRejections) => {
+      if (fileRejections.length > 0) {
+        fileRejections.forEach(({ file, errors }) => {
+          const errorMessages = errors.map(e => e.message).join(', ');
+          toast({
+            title: "File error",
+            description: `${file.name}: ${errorMessages}`,
+            variant: "destructive"
+          });
+        });
+        return;
+      }
+      
+      setFiles(prevFiles => [
+        ...prevFiles,
+        ...acceptedFiles.map(file => 
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+            progress: 0
+          })
+        )
+      ]);
+    }, []),
   });
 
-  const uploadFiles = async () => {
+  // Clean up previews when component unmounts
+  useEffect(() => {
+    return () => {
+      files.forEach(file => {
+        if (file.preview) URL.revokeObjectURL(file.preview);
+      });
+    };
+  }, [files]);
+
+  const removeFile = useCallback((index: number) => {
+    setFiles(prevFiles => {
+      const newFiles = [...prevFiles];
+      const removedFile = newFiles.splice(index, 1)[0];
+      if (removedFile.preview) {
+        URL.revokeObjectURL(removedFile.preview);
+      }
+      return newFiles;
+    });
+  }, []);
+
+  const clearAllFiles = useCallback(() => {
+    files.forEach(file => {
+      if (file.preview) URL.revokeObjectURL(file.preview);
+    });
+    setFiles([]);
+  }, [files]);
+
+  const uploadFiles = useCallback(async () => {
     if (files.length === 0) return;
     
     setIsUploading(true);
+    let uploadedCount = 0;
+    let failedCount = 0;
     
-    const uploads = files.map(async (fileObj, index) => {
-      const { file } = fileObj;
+    try {
+      const supabase = createClient(
+        import.meta.env.VITE_SUPABASE_URL, 
+        import.meta.env.VITE_SUPABASE_ANON_KEY
+      );
       
-      try {
-        // Determine category based on file type
-        let category = 'other';
-        if (file.type.startsWith('image/')) {
-          if (file.type.includes('svg')) {
-            category = 'svg';
-          } else {
-            category = 'images';
-          }
-        } else if (file.type.includes('pdf') || file.type.includes('doc')) {
-          category = 'documents';
-        } else if (file.type.includes('font')) {
-          category = 'fonts';
-        }
-        
-        // Create file path
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-        const filePath = `${category}/${fileName}`;
-        
-        // Upload to storage
-        const { error: uploadError, data } = await supabase.storage
-          .from('ftg-assets')
-          .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: false
+      const uploadPromises = files.map(async (file, index) => {
+        try {
+          // Upload to Supabase storage
+          const { data, error } = await supabase.storage
+            .from('assets')
+            .upload(`public/${file.name}`, file, {
+              upsert: false,
+              contentType: file.type
+            });
+            
+          if (error) throw error;
+          
+          // Update file progress
+          setFiles(prevFiles => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = { ...updatedFiles[index], progress: 100 };
+            return updatedFiles;
           });
           
-        if (uploadError) throw uploadError;
-        
-        // Update progress in UI
-        setFiles(currentFiles => 
-          currentFiles.map((f, i) => 
-            i === index ? { ...f, progress: 50 } : f
-          )
-        );
-        
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('ftg-assets')
-          .getPublicUrl(filePath);
-        
-        // Insert asset record using the edge function
-        const { error: dbError } = await supabase.functions.invoke('assets', {
-          body: {
-            action: 'insertAsset',
-            data: {
-              name: file.name,
-              file_path: filePath,
-              file_type: fileExt?.toLowerCase() || 'unknown',
-              file_size: file.size,
-              mime_type: file.type,
-              category: category,
-              alt_text: file.name
-            }
-          }
-        });
+          uploadedCount++;
+          return data;
+        } catch (err) {
+          console.error(`Error uploading ${file.name}:`, err);
           
-        if (dbError) throw dbError;
+          // Update file with error
+          setFiles(prevFiles => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles[index] = { 
+              ...updatedFiles[index], 
+              progress: 0, 
+              error: err instanceof Error ? err.message : 'Upload failed' 
+            };
+            return updatedFiles;
+          });
+          
+          failedCount++;
+          return null;
+        }
+      });
+      
+      await Promise.all(uploadPromises);
+      
+      if (uploadedCount > 0) {
+        toast({
+          title: "Upload complete",
+          description: `Successfully uploaded ${uploadedCount} ${uploadedCount === 1 ? 'file' : 'files'}`
+        });
         
-        // Update UI to show success
-        setFiles(currentFiles => 
-          currentFiles.map((f, i) => 
-            i === index ? { ...f, progress: 100, uploaded: true } : f
-          )
-        );
-        
-      } catch (error: any) {
-        console.error('Upload error:', error);
-        setFiles(currentFiles => 
-          currentFiles.map((f, i) => 
-            i === index ? { ...f, error: error.message || 'Upload failed', progress: 0 } : f
-          )
-        );
+        if (onUploadComplete) {
+          onUploadComplete();
+        }
       }
-    });
-    
-    await Promise.all(uploads);
-    setIsUploading(false);
-    toast({
-      title: "Assets uploaded",
-      description: `Successfully uploaded ${files.filter(f => f.uploaded).length} of ${files.length} files`,
-    });
-    
-    if (onUploadComplete) {
-      onUploadComplete();
+      
+      if (failedCount > 0) {
+        toast({
+          title: "Upload issues",
+          description: `${failedCount} ${failedCount === 1 ? 'file' : 'files'} failed to upload`,
+          variant: "destructive"
+        });
+      }
+    } catch (err) {
+      console.error('Error in uploadFiles:', err);
+      toast({
+        title: "Upload error",
+        description: "There was a problem uploading your files",
+        variant: "destructive"
+      });
+    } finally {
+      setIsUploading(false);
+      
+      // If all uploads were successful, clear the files
+      if (failedCount === 0 && uploadedCount > 0) {
+        clearAllFiles();
+      }
     }
-  };
-  
-  const removeFile = (index: number) => {
-    setFiles(files => files.filter((_, i) => i !== index));
-  };
-  
-  const clearAllFiles = () => {
-    setFiles([]);
-  };
+  }, [files, clearAllFiles, onUploadComplete]);
 
   return {
     files,
@@ -149,10 +185,6 @@ export const useFileUpload = ({ onUploadComplete }: UseFileUploadProps = {}) => 
     uploadFiles,
     removeFile,
     clearAllFiles,
-    dropzoneProps: {
-      getRootProps,
-      getInputProps,
-      isDragActive
-    }
+    dropzoneProps: { getRootProps, getInputProps, isDragActive }
   };
-};
+}

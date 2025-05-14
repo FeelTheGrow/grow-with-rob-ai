@@ -19,8 +19,8 @@ const DropZone: React.FC<DropZoneProps> = ({ getRootProps, getInputProps, isDrag
       <input {...getInputProps()} />
       <div className="flex flex-col items-center justify-center space-y-2">
         <ArrowUpIcon className="h-10 w-10 text-ftg-green" />
-        <h3 className="text-lg font-medium">Drag files here or click to upload</h3>
-        <p className="text-sm text-gray-500">
+        <h3 className="text-lg font-medium text-foreground">Drag files here or click to upload</h3>
+        <p className="text-sm text-foreground/70">
           Support for images, documents, icons, SVGs, and fonts
         </p>
       </div>
