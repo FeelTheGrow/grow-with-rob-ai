@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 interface ServiceCardProps {
@@ -21,8 +22,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   }, [delay]);
   return <div className={cn("bg-white p-6 rounded-lg shadow-lg border-l-4 border-ftg-green card-hover", isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8", "transition-all duration-700")}>
       <div className="w-16 h-16 mb-4 text-ftg-green">{icon}</div>
-      <h3 className="text-xl font-bold mb-3">{title}</h3>
-      <p className="text-ftg-dark/80">{description}</p>
+      <h3 className="text-xl font-bold mb-3 text-ftg-dark">{title}</h3>
+      <p className="text-gray-700">{description}</p>
     </div>;
 };
 const ServicesSection: React.FC = () => {

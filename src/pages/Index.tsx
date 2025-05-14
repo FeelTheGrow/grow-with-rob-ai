@@ -13,8 +13,14 @@ import ScrollReveal from '@/components/ScrollReveal';
 
 const Index = () => {
   useEffect(() => {
-    // Update the title
-    document.title = "Feel the Grow | Product Strategy with Fun";
+    // Update the title and meta description
+    document.title = "Rob Dysell | Feel the Grow - Product Strategy Specialist";
+    
+    // Update meta description if it exists
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Rob Dysell helps businesses grow through innovative product strategy, business development, and growth processes with a personal touch.');
+    }
   }, []);
 
   return (

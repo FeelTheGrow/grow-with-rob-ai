@@ -21,7 +21,7 @@ const FileList: React.FC<FileListProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">Files to Upload ({files.length})</h3>
+        <h3 className="font-medium text-foreground">Files to Upload ({files.length})</h3>
         <button 
           onClick={onClearAllFiles}
           className="text-sm text-gray-500 hover:text-ftg-green"
