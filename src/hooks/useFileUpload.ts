@@ -28,14 +28,14 @@ export function useFileUpload({
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'image/*': [],
-      'application/pdf': [],
-      'text/plain': [],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [],
-      'font/ttf': [],
-      'font/otf': [],
-      'image/svg+xml': [],
+      'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+      'application/pdf': ['.pdf'],
+      'text/plain': ['.txt'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+      'font/ttf': ['.ttf'],
+      'font/otf': ['.otf'],
+      'image/svg+xml': ['.svg'],
     },
     maxFiles,
     maxSize,
