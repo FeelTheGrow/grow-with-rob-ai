@@ -80,7 +80,7 @@ const AboutSection = () => {
             
             <div className="bg-ftg-light p-5 rounded-lg mb-6 border-l-4 border-ftg-green">
               <p className="italic text-gray-700">
-                "I help businesses identify when to persevere with their current strategy and when to pivot for maximum impact."
+                "My mission is simple: to help businesses identify when to persevere with their current strategy and when to pivot for maximum impact—all while having fun in the process."
               </p>
             </div>
             
