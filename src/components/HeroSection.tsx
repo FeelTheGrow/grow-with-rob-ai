@@ -41,8 +41,8 @@ const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-ftg-dark">
-            Product strategy, business development, and growth processes with fun as the secret ingredient.
+          <p className="text-xl md:text-2xl mb-8 text-gray-700">
+            I help businesses develop product strategies, improve business development, and implement growth processes—with fun as the secret ingredient.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">

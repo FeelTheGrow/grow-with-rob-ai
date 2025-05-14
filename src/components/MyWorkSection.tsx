@@ -67,7 +67,7 @@ const MyWorkSection: React.FC = () => {
             PORTFOLIO
           </span>
           <h2 className="section-heading">My <span className="text-ftg-green">Work</span></h2>
-          <p className="text-xl max-w-3xl mx-auto text-ftg-dark">
+          <p className="text-xl max-w-3xl mx-auto text-gray-700">
             A selection of projects where I've helped businesses grow and succeed.
           </p>
         </div>
