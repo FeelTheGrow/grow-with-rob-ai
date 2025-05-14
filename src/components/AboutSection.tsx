@@ -79,7 +79,7 @@ const AboutSection = () => {
             </p>
             
             <div className="bg-ftg-light p-5 rounded-lg mb-6 border-l-4 border-ftg-green">
-              <p className="italic text-ftg-dark">
+              <p className="italic text-gray-700">
                 "I help businesses identify when to persevere with their current strategy and when to pivot for maximum impact."
               </p>
             </div>
